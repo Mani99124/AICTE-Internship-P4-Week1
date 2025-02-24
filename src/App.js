@@ -1,28 +1,26 @@
-import React from 'react';
-import "./App.css";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import Login from './Pages/Auth/Login';
-import Register from './Pages/Auth/Register';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from './Pages/Home/Home';
-import SetAvatar from './Pages/Avatar/setAvatar';
+import React, { useState } from 'react';
+import TransactionForm from './components/TransactionForm';
+import TransactionList from './components/TransactionList';
 
+function App() {
+  const [transactions, setTransactions] = useState([]);
 
+  const addTransaction = (transaction) => {
+    setTransactions([...transactions, transaction]);
+  };
 
-const App = () => {
+  const totalBalance = transactions.reduce((total, transaction) => total + transaction.amount, 0);
+
   return (
-    
-      <div className="App" style={{backgroundColor:'grey'}}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/setAvatar" element={<SetAvatar />} />
-        </Routes>
-      </BrowserRouter>
+    <div className="container mt-5">
+      <h1 className="text-center">Personal Finance Manager</h1>
+      <TransactionForm addTransaction={addTransaction} />
+      <TransactionList transactions={transactions} />
+      <div className="mt-4">
+        <h4>Total Balance: ${totalBalance.toFixed(2)}</h4>
       </div>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
